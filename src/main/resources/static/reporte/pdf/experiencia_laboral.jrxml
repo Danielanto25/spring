@@ -37,10 +37,19 @@
 		<field name="edad" class="java.lang.Long"/>
 		<field name="documento" class="java.lang.String"/>
 		<field name="totalDias" class="java.lang.Long"/>
-		<field name="totalMeses" class="java.lang.Double"/>
-		<field name="totalYears" class="java.lang.Double"/>
+		<field name="totalMeses" class="java.lang.Float"/>
+		<field name="totalYears" class="java.lang.Float"/>
 		<field name="lstTotalExperiencia" class="java.util.List"/>
-		<field name="meses " class="java.lang.Double"/>
+	</subDataset>
+	<subDataset name="DatasetTotalExperiencia" uuid="4d5a57ef-309b-4a59-b990-297bdcf26884">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="meses" class="java.lang.Float"/>
+		<field name="dias" class="java.lang.Long"/>
+		<field name="years" class="java.lang.Float"/>
+		<field name="nombreTrabajo" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="nombre" class="java.lang.String"/>
 	<parameter name="nombre2" class="java.lang.String"/>
@@ -48,9 +57,6 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<background>
-		<band height="73" splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="91" splitType="Stretch">
 			<staticText>
@@ -71,160 +77,161 @@
 		<band height="61" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="380" splitType="Stretch">
+		<band height="272" splitType="Stretch">
 			<componentElement>
-				<reportElement x="60" y="60" width="440" height="320" uuid="307e5f07-9bbe-4126-baca-4b02530c3ead"/>
+				<reportElement x="30" y="10" width="470" height="171" uuid="307e5f07-9bbe-4126-baca-4b02530c3ead"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="DatasetExp" uuid="012befde-13b2-454a-a2af-13cb920f6e49">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{experiencia})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="320" width="440">
+					<jr:listContents height="171" width="470">
 						<textField>
-							<reportElement x="100" y="10" width="100" height="30" uuid="e024df22-4659-4ac5-92d7-e2341f12c7cd"/>
-							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<reportElement x="90" y="10" width="110" height="20" uuid="e024df22-4659-4ac5-92d7-e2341f12c7cd"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="9"/>
+							</textElement>
 							<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="330" y="10" width="100" height="30" uuid="80783fca-1ef5-46a6-89c0-ab2910b1efc1"/>
+							<reportElement x="290" y="10" width="71" height="20" uuid="80783fca-1ef5-46a6-89c0-ab2910b1efc1"/>
 							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="100" y="60" width="100" height="30" uuid="b8e8c985-1efe-4057-9bd2-a20a829c5222"/>
+							<reportElement x="410" y="10" width="60" height="20" uuid="b8e8c985-1efe-4057-9bd2-a20a829c5222"/>
 							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="0" y="10" width="100" height="30" uuid="8426d322-8473-4b5b-8282-b3500b292ad8"/>
+							<reportElement x="20" y="10" width="70" height="20" uuid="8426d322-8473-4b5b-8282-b3500b292ad8"/>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="14"/>
 							</textElement>
-							<text><![CDATA[Nombre]]></text>
+							<text><![CDATA[Nombre:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="0" y="60" width="100" height="30" uuid="211a6e60-6857-40d4-81ef-f2646ce218a2"/>
+							<reportElement x="370" y="10" width="40" height="20" uuid="211a6e60-6857-40d4-81ef-f2646ce218a2"/>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="14"/>
 							</textElement>
-							<text><![CDATA[Edad]]></text>
+							<text><![CDATA[Edad:]]></text>
 						</staticText>
 						<staticText>
-							<reportElement x="220" y="10" width="100" height="30" uuid="524dc7af-c828-44b9-8cae-5e4c68f7f593"/>
+							<reportElement x="210" y="10" width="80" height="20" uuid="524dc7af-c828-44b9-8cae-5e4c68f7f593"/>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="14"/>
 							</textElement>
-							<text><![CDATA[Documento]]></text>
+							<text><![CDATA[Documento:]]></text>
 						</staticText>
 						<textField>
-							<reportElement x="338" y="58" width="91" height="31" uuid="71783f47-fd16-49af-a655-fa18cca6d3f5"/>
+							<reportElement positionType="Float" x="150" y="140" width="91" height="31" uuid="71783f47-fd16-49af-a655-fa18cca6d3f5"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{totalDias}]]></textFieldExpression>
 						</textField>
-						<staticText>
-							<reportElement x="220" y="58" width="91" height="31" uuid="5eea43c3-20f5-48d1-8d2d-fb1af8da70f6"/>
-							<textElement textAlignment="Center" verticalAlignment="Middle"/>
-							<text><![CDATA[Total Dias]]></text>
-						</staticText>
-						<staticText>
-							<reportElement x="0" y="100" width="91" height="31" uuid="2f0b74af-a6e7-49c3-9b80-15ab587c6948"/>
-							<textElement textAlignment="Center" verticalAlignment="Middle"/>
-							<text><![CDATA[Total Meses]]></text>
-						</staticText>
 						<textField>
-							<reportElement x="105" y="100" width="91" height="31" uuid="62ab9ceb-1a36-47a6-9c00-cb559727a7ef"/>
+							<reportElement positionType="Float" x="250" y="140" width="91" height="31" uuid="62ab9ceb-1a36-47a6-9c00-cb559727a7ef"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{totalMeses}]]></textFieldExpression>
 						</textField>
-						<staticText>
-							<reportElement x="220" y="100" width="91" height="31" uuid="b8f38aea-2e04-454d-a987-eee10b46d862"/>
-							<textElement textAlignment="Center" verticalAlignment="Middle"/>
-							<text><![CDATA[Total Años]]></text>
-						</staticText>
 						<textField>
-							<reportElement x="338" y="100" width="91" height="31" uuid="97f9ea88-018f-4017-9b8f-795494ccb56b"/>
+							<reportElement positionType="Float" x="350" y="140" width="91" height="31" uuid="97f9ea88-018f-4017-9b8f-795494ccb56b"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{totalYears}]]></textFieldExpression>
 						</textField>
 						<componentElement>
-							<reportElement x="18" y="150" width="400" height="141" uuid="2698d24a-5517-43ec-b335-7af4961c35f4">
+							<reportElement x="40" y="60" width="400" height="61" uuid="10cc5f9b-bd79-452a-a8b3-c7b7abb6719d">
 								<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 								<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 								<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
 								<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
-								<property name="com.jaspersoft.studio.unit.y" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
 							<jr:table>
-								<datasetRun subDataset="DatasetExp" uuid="a3265e7b-cba9-435b-bb61-dd5b8da27143">
+								<datasetRun subDataset="DatasetTotalExperiencia" uuid="0482560a-7bae-4460-9c03-37fd1ae236c2">
 									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{lstTotalExperiencia})]]></dataSourceExpression>
 								</datasetRun>
-								<jr:column width="100" uuid="f49dfa54-2b15-405e-9e9f-506d9fe7e9bb">
+								<jr:column width="100" uuid="eb642fa7-2f02-4205-ba6e-a5b6f847108e">
 									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-									<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+									<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
 										<staticText>
-											<reportElement x="0" y="0" width="100" height="30" uuid="d560c7d1-b705-4aff-bff1-3355d41a645e"/>
+											<reportElement x="0" y="0" width="100" height="30" uuid="21a2d87e-4218-42f3-bccc-714d5173163a"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle"/>
 											<text><![CDATA[Trabajo]]></text>
 										</staticText>
-									</jr:columnHeader>
-									<jr:detailCell style="Table_TD" height="30">
-										<property name="com.jaspersoft.studio.unit.width" value="px"/>
-									</jr:detailCell>
-								</jr:column>
-								<jr:column width="100" uuid="79215548-6960-42d4-b874-c511d471d20f">
-									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-									<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-										<staticText>
-											<reportElement x="0" y="0" width="100" height="30" uuid="a75faaad-0f26-408d-85bb-3fe3731b1183"/>
-											<textElement textAlignment="Center" verticalAlignment="Middle"/>
-											<text><![CDATA[Dias]]></text>
-										</staticText>
-									</jr:columnHeader>
-									<jr:detailCell style="Table_TD" height="30">
-										<property name="com.jaspersoft.studio.unit.width" value="px"/>
-									</jr:detailCell>
-								</jr:column>
-								<jr:column width="100" uuid="a30ea265-5305-4d2b-8bdb-7afbbaed919e">
-									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-									<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
-										<staticText>
-											<reportElement x="0" y="0" width="100" height="30" uuid="c2ec0742-5765-4e11-8469-53e30595d8c4"/>
-											<textElement textAlignment="Center" verticalAlignment="Middle"/>
-											<text><![CDATA[Meses]]></text>
-										</staticText>
-									</jr:columnHeader>
+									</jr:tableHeader>
 									<jr:detailCell style="Table_TD" height="30">
 										<property name="com.jaspersoft.studio.unit.width" value="px"/>
 										<textField>
-											<reportElement x="0" y="0" width="100" height="30" uuid="9d1c318d-fab1-4c7b-bc3c-cbf6258c4d76"/>
-											<textFieldExpression><![CDATA[$F{nombre}.indexOf( "meses" )]]></textFieldExpression>
+											<reportElement x="0" y="0" width="100" height="30" uuid="6e1506da-2939-4b36-9163-431fab9cb6ea"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA[$F{nombreTrabajo}]]></textFieldExpression>
 										</textField>
 									</jr:detailCell>
 								</jr:column>
-								<jr:column width="100" uuid="40d1c192-adb2-4570-9501-d98aa28b8d20">
-									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-									<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+								<jr:column width="100" uuid="4f39c347-e8d8-4fa1-84de-35f6bf762c8f">
+									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+									<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
 										<staticText>
-											<reportElement x="0" y="0" width="100" height="30" uuid="6ba49fc7-fa12-45da-a17a-0360f300cce2"/>
+											<reportElement x="0" y="0" width="100" height="30" uuid="7f3e8b94-4e7e-4793-a736-510a06952455"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<text><![CDATA[Dias]]></text>
+										</staticText>
+									</jr:tableHeader>
+									<jr:detailCell style="Table_TD" height="30">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<textField>
+											<reportElement x="0" y="0" width="100" height="30" uuid="5e2919c7-b07c-4ca1-ae56-e595bac3b319"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+										</textField>
+									</jr:detailCell>
+								</jr:column>
+								<jr:column width="100" uuid="4717280e-aa58-4528-b6aa-1f349e68def0">
+									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+									<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<staticText>
+											<reportElement x="0" y="0" width="100" height="30" uuid="1abccc8a-c48e-4842-930a-d1252410ff9d"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<text><![CDATA[Meses]]></text>
+										</staticText>
+									</jr:tableHeader>
+									<jr:detailCell style="Table_TD" height="30">
+										<textField>
+											<reportElement x="0" y="0" width="100" height="30" uuid="70f8caae-201b-430d-b18d-d1e8786ad179"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA[$F{meses}]]></textFieldExpression>
+										</textField>
+									</jr:detailCell>
+								</jr:column>
+								<jr:column width="100" uuid="63c725c7-6f25-4cf6-b2b8-8e51ba04dbb6">
+									<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+									<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+										<staticText>
+											<reportElement x="0" y="0" width="100" height="30" uuid="70b76b97-e67a-4fdb-9bcd-b7989c387d47"/>
 											<textElement textAlignment="Center" verticalAlignment="Middle"/>
 											<text><![CDATA[Años]]></text>
 										</staticText>
-									</jr:columnHeader>
+									</jr:tableHeader>
 									<jr:detailCell style="Table_TD" height="30">
 										<property name="com.jaspersoft.studio.unit.width" value="px"/>
+										<textField>
+											<reportElement x="0" y="0" width="100" height="30" uuid="f7e04adb-de2f-4964-b665-f84c03438fea"/>
+											<textElement textAlignment="Center" verticalAlignment="Middle"/>
+											<textFieldExpression><![CDATA[$F{years}]]></textFieldExpression>
+										</textField>
 									</jr:detailCell>
 								</jr:column>
 							</jr:table>
 						</componentElement>
+						<staticText>
+							<reportElement positionType="Float" x="40" y="139" width="101" height="32" uuid="a1d77a5e-39b4-40f0-a889-dfe5e40d6385"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<text><![CDATA[Total]]></text>
+						</staticText>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

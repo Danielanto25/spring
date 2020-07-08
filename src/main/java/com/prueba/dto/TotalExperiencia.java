@@ -6,11 +6,11 @@ import lombok.Data;
 public class TotalExperiencia {
 	
 	private long dias;
-	private double meses;
-	private double years;
+	private float meses;
+	private float years;
 	private String nombreTrabajo;
 
-	public TotalExperiencia(long dias, Double meses, Double years, String nombreTrabajo) {
+	public TotalExperiencia(long dias, float meses, float years, String nombreTrabajo) {
 		super();
 		this.dias = dias;
 		this.meses = meses;

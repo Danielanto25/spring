@@ -63,7 +63,7 @@ public class ExperienciaLaboralController {
 		return service.tiempoexp(codigo);
 	}*/
 
-	@GetMapping(path = "experiencia-individual/{codigo}")
+	@GetMapping(path = "experiencia-individual")
 	public List<PersonaCalculo> tiempoIndividual() {
 		return service.tiempoIndividual();
 	}

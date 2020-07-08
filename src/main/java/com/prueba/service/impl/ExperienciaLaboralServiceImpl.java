@@ -35,7 +35,6 @@ public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService
 	@Autowired
 	private TipoTrabajoRepository tipoTrabajoRepo;
 
-
 	@Override
 	public void crear(ExperienciaLaboral exl) {
 		exlRepo.crear(exl);
@@ -87,33 +86,39 @@ public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService
 	@Override
 	public List<PersonaCalculo> tiempoIndividual() {
 
-		List<TotalExperiencia> lstTotalexp = new ArrayList<TotalExperiencia>();
 		List<PersonaCalculo> lstPersonaC = new ArrayList<PersonaCalculo>();
 
-		long dias = 0;
-		long diast = 0;
-		double meses = 0;
-		double years = 0;
+		
 		TotalExperiencia txp = null;
 		PersonaCalculo personaC = null;
 		String trabajo;
 		LocalDate today = LocalDate.now();
 		long edad;
 		for (Persona p : personaRepo.listar()) {
-
+			List<TotalExperiencia> lstTotalexp = new ArrayList<TotalExperiencia>();
+			long dias = 0;
+			long diast = 0;
+			float meses = 0;
+			float years = 0;
+			float mesest = 0;
+			float yearst = 0;
+			
 			for (ExperienciaLaboral exp : exlRepo.listarPorPerCodigo(p.getCodigo())) {
 				dias = ChronoUnit.DAYS.between(exp.getFechaInicio(), exp.getFechaFin()) + dias;
 				diast = dias + diast;
-				meses = dias / 30.00 + meses;
-				years = dias / 365.00 + years;
-				
+				meses = (float)(dias / 30.0 + meses);
+				years = (float)(dias / 365.0 + years);
+				mesest = (float)(dias / 30.0);
+				yearst = (float)(dias/365.0);				
+
 				trabajo = tipoTrabajoRepo.listarPorCodigo(exp.getTitCodigo()).getNombre();
-				txp = new TotalExperiencia(dias, dias / 30.0, dias / 365.0, trabajo);
+				txp = new TotalExperiencia(dias, mesest, yearst, trabajo);
 				lstTotalexp.add(txp);
 			}
 
 			edad = ChronoUnit.YEARS.between(p.getFechaNacimiento(), today);
-			personaC = new PersonaCalculo(p.getNombre(), edad, p.getIdentificacion(), diast, meses, years, lstTotalexp);
+			String nombre=p.getNombre()+" "+p.getApellido();
+			personaC = new PersonaCalculo(nombre, edad, p.getIdentificacion(), diast, meses, years, lstTotalexp);
 			lstPersonaC.add(personaC);
 		}
 		return lstPersonaC;
@@ -135,8 +140,8 @@ public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService
 	@Override
 	public void experienciaPdf(HttpServletResponse response) {
 
-		//List<TotalExperiencia> lstTotalExp = tiempoIndividual();
-		List<PersonaCalculo> lstPersona=tiempoIndividual();
+		// List<TotalExperiencia> lstTotalExp = tiempoIndividual();
+		List<PersonaCalculo> lstPersona = tiempoIndividual();
 
 		JasperData jasper = new JasperData();
 
@@ -157,7 +162,7 @@ public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService
 
 	@Override
 	public void experienciaExcel(HttpServletResponse response) {
-		List<PersonaCalculo> lstPersona=tiempoIndividual();
+		List<PersonaCalculo> lstPersona = tiempoIndividual();
 
 		JasperData jasper = new JasperData();
 
