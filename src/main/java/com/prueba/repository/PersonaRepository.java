@@ -59,7 +59,7 @@ public class PersonaRepository {
 			}
 			return personas;
 		} catch (Exception e) {
-			throw new RuntimeException();
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -107,7 +107,8 @@ public class PersonaRepository {
 		}
 
 	}
-	public void update(Persona persona) {
+	public Boolean update(Persona persona) {
+		boolean flag=false;
 		String sql = "update persona  set per_nombre=?,per_apellido=?,per_fecha_nacimiento=?,per_identificacion=? where per_codigo=?";
 		try {
 			Connection conexion = datasource.getConnection();
@@ -118,10 +119,25 @@ public class PersonaRepository {
 			ps.setObject(3, persona.getFechaNacimiento());
 			ps.setString(4, persona.getIdentificacion());
 			ps.setInt(5, persona.getCodigo());
-			ps.execute();
+			flag=ps.execute();
 			ps.close();
 			conexion.close();
-
+			return flag;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	public Boolean eliminar(Integer codigo) {
+		String sql="delete from persona where per_codigo=?";
+		boolean flag;
+		try {
+			Connection conexion = datasource.getConnection();
+			PreparedStatement ps = conexion.prepareStatement(sql);
+			ps.setInt(1, codigo);
+			flag=ps.execute();
+			ps.close();
+			conexion.close();
+			return flag;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

@@ -12,7 +12,9 @@ public interface IPersonaService {
 
 	Persona listarPorCodigo(Integer codigo);
 
-	void update(Persona persona);
+	RespuestaServidor update(Persona persona);
 
 	Persona listarPorIdentificacion(String identificacion);
+	
+	RespuestaServidor eliminar(Integer codigo);
 }

@@ -17,16 +17,15 @@ public class PersonaServiceImpl implements IPersonaService {
 
 	@Override
 	public RespuestaServidor crear(Persona persona) {
-		if(perRepo.listarPorIdentificacion(persona.getIdentificacion())==null) {
-			
-			perRepo.crear(persona);
-			return new RespuestaServidor("La persona fue creada correctamente",1);
-		}else {
-			return new RespuestaServidor("Persona Ya existe",2);
-		}
-		
-	}
+		if (perRepo.listarPorIdentificacion(persona.getIdentificacion()) == null) {
 
+			perRepo.crear(persona);
+			return new RespuestaServidor("La persona fue creada correctamente", 1);
+		} else {
+			return new RespuestaServidor("Persona Ya existe", 2);
+		}
+
+	}
 
 	@Override
 	public List<Persona> listar() {
@@ -41,8 +40,12 @@ public class PersonaServiceImpl implements IPersonaService {
 	}
 
 	@Override
-	public void update(Persona persona) {
-		perRepo.update(persona);
+	public RespuestaServidor update(Persona persona) {
+		if(!perRepo.update(persona)) {
+			return new RespuestaServidor("Actualizacion correcta", 1);
+		}else {
+			return new RespuestaServidor("Actualizacion Fallida", 2);
+		}
 
 	}
 
@@ -52,4 +55,12 @@ public class PersonaServiceImpl implements IPersonaService {
 		return perRepo.listarPorIdentificacion(identificacion);
 	}
 
+	@Override
+	public RespuestaServidor eliminar(Integer codigo) {
+		if (!perRepo.eliminar(codigo)) {
+			return new RespuestaServidor("La persona fue eliminada correctamente", 1);
+		} else {
+			return new RespuestaServidor("Eliminacion fallida", 2);
+		}
+	}
 }

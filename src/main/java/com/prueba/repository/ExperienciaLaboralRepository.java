@@ -137,7 +137,8 @@ public class ExperienciaLaboralRepository {
 		}
 
 	}
-	public void update(ExperienciaLaboral exl) {
+	public Boolean update(ExperienciaLaboral exl) {
+		boolean flag;
 		String sql = "update experiencia_laboral set exl_fecha_inicio=?,exl_fecha_fin=?,per_codigo=?,tit_codigo=? where exl_codigo=?";
 		try {
 			Connection conexion = datasource.getConnection();
@@ -148,10 +149,26 @@ public class ExperienciaLaboralRepository {
 			ps.setInt(3, exl.getPerCodigo());
 			ps.setInt(4, exl.getTitCodigo());
 			ps.setInt(5, exl.getCodigo());
-			ps.execute();
+			flag=ps.execute();
 			ps.close();
 			conexion.close();
+			return flag;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	public Boolean eliminar(Integer codigo) {
+		boolean flag;
+		String sql="delete from experiencia_laboral where exl_codigo=?";
+		try {
+			Connection conexion = datasource.getConnection();
 
+			PreparedStatement ps = conexion.prepareStatement(sql);
+			ps.setInt(1, codigo);
+			flag=ps.execute();
+			ps.close();
+			conexion.close();
+			return flag;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

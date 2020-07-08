@@ -2,8 +2,11 @@ package com.prueba.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.prueba.dto.TotalExperiencia;
+import com.prueba.dto.PersonaCalculo;
+import com.prueba.dto.RespuestaServidor;
 import com.prueba.model.ExperienciaLaboral;
 import com.prueba.service.IExperienciaLaboralService;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("api/experiencia-laboral")
@@ -23,8 +28,8 @@ public class ExperienciaLaboralController {
 	private IExperienciaLaboralService service;
 
 	@PostMapping(path = "crear")
-	public  void crear(@RequestBody ExperienciaLaboral exl) {
-		 service.crear(exl);
+	public void crear(@RequestBody ExperienciaLaboral exl) {
+		service.crear(exl);
 
 	}
 
@@ -39,25 +44,43 @@ public class ExperienciaLaboralController {
 	}
 
 	@PutMapping(path = "update")
-	public void update(@RequestBody ExperienciaLaboral exl) {
-		service.update(exl);
+	public RespuestaServidor update(@RequestBody ExperienciaLaboral exl) {
+		return service.update(exl);
 	}
 
 	@GetMapping(path = "listar-por-per-codigo/{codigo}")
 	public List<ExperienciaLaboral> listarPorPerCodigo(@PathVariable Integer codigo) {
 		return service.listarPorPerCodigo(codigo);
 	}
+
 	@GetMapping(path = "listar-por-tit-codigo/{codigo}")
 	public List<ExperienciaLaboral> listarPorTitCodigo(@PathVariable Integer codigo) {
 		return service.listarPorTitCodigo(codigo);
 	}
+/*
 	@GetMapping(path = "experiencia/{codigo}")
 	public TotalExperiencia tiepoexp(@PathVariable Integer codigo) {
 		return service.tiempoexp(codigo);
-	}
-	@GetMapping(path = "experiencia-individual/{codigo}")
-	public List<TotalExperiencia> tiempoIndividual(@PathVariable Integer codigo){
-		return service.tiempoIndividual(codigo);
-	}
-}
+	}*/
 
+	@GetMapping(path = "experiencia-individual/{codigo}")
+	public List<PersonaCalculo> tiempoIndividual() {
+		return service.tiempoIndividual();
+	}
+
+	@DeleteMapping(path = "eliminar/{codigo}")
+	public RespuestaServidor eliminar(@PathVariable Integer codigo) {
+		return service.eliminar(codigo);
+	}
+
+	@GetMapping(path = "experiencia-pdf")
+	public void experienciaPdf(HttpServletResponse response) {
+		service.experienciaPdf(response); 
+	}
+
+	@GetMapping(path = "experiencia-excel")
+	public void experienciaExcel(HttpServletResponse response) {
+		service.experienciaExcel(response); 
+	}
+
+}

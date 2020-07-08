@@ -1,21 +1,40 @@
 package com.prueba.service.impl;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prueba.dto.JasperData;
+import com.prueba.dto.PersonaCalculo;
+import com.prueba.dto.RespuestaServidor;
 import com.prueba.dto.TotalExperiencia;
 import com.prueba.model.ExperienciaLaboral;
+import com.prueba.model.Persona;
 import com.prueba.repository.ExperienciaLaboralRepository;
+import com.prueba.repository.PersonaRepository;
+import com.prueba.repository.TipoTrabajoRepository;
 import com.prueba.service.IExperienciaLaboralService;
+import com.prueba.util.JasperReportComponent;
 
 @Service
 public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService {
 	@Autowired
 	private ExperienciaLaboralRepository exlRepo;
+	@Autowired
+	private JasperReportComponent jasperComponent;
+	@Autowired
+	private PersonaRepository personaRepo;
+	@Autowired
+	private TipoTrabajoRepository tipoTrabajoRepo;
+
 
 	@Override
 	public void crear(ExperienciaLaboral exl) {
@@ -47,34 +66,116 @@ public class ExperienciaLaboralServiceImpl implements IExperienciaLaboralService
 	}
 
 	@Override
-	public void update(ExperienciaLaboral exl) {
-		exlRepo.update(exl);
+	public RespuestaServidor update(ExperienciaLaboral exl) {
+		if (!exlRepo.update(exl)) {
+			return new RespuestaServidor("Actualizacion correcta", 1);
+		} else {
+			return new RespuestaServidor("Actualizacion Fallida", 2);
+		}
+
+	}
+	/*
+	 * @Override public TotalExperiencia tiempoexp(Integer codigo) { long days = 0;
+	 * float year = 0, mes = 0; for (ExperienciaLaboral exp :
+	 * exlRepo.listarPorPerCodigo(codigo)) { days =
+	 * ChronoUnit.DAYS.between(exp.getFechaInicio(), exp.getFechaFin()) + days;
+	 * 
+	 * } mes = days / 30; year = mes / 12; return new TotalExperiencia(days, mes,
+	 * year, codigo); }
+	 */
+
+	@Override
+	public List<PersonaCalculo> tiempoIndividual() {
+
+		List<TotalExperiencia> lstTotalexp = new ArrayList<TotalExperiencia>();
+		List<PersonaCalculo> lstPersonaC = new ArrayList<PersonaCalculo>();
+
+		long dias = 0;
+		long diast = 0;
+		double meses = 0;
+		double years = 0;
+		TotalExperiencia txp = null;
+		PersonaCalculo personaC = null;
+		String trabajo;
+		LocalDate today = LocalDate.now();
+		long edad;
+		for (Persona p : personaRepo.listar()) {
+
+			for (ExperienciaLaboral exp : exlRepo.listarPorPerCodigo(p.getCodigo())) {
+				dias = ChronoUnit.DAYS.between(exp.getFechaInicio(), exp.getFechaFin()) + dias;
+				diast = dias + diast;
+				meses = dias / 30.00 + meses;
+				years = dias / 365.00 + years;
+				
+				trabajo = tipoTrabajoRepo.listarPorCodigo(exp.getTitCodigo()).getNombre();
+				txp = new TotalExperiencia(dias, dias / 30.0, dias / 365.0, trabajo);
+				lstTotalexp.add(txp);
+			}
+
+			edad = ChronoUnit.YEARS.between(p.getFechaNacimiento(), today);
+			personaC = new PersonaCalculo(p.getNombre(), edad, p.getIdentificacion(), diast, meses, years, lstTotalexp);
+			lstPersonaC.add(personaC);
+		}
+		return lstPersonaC;
+	}
+
+	public RespuestaServidor eliminar(Integer codigo) {
+		if (!exlRepo.eliminar(codigo)) {
+
+			return new RespuestaServidor("Eliminacion Exitosa", 1);
+
+		} else {
+
+			return new RespuestaServidor("Eliminacion Fallida", 2);
+
+		}
 
 	}
 
 	@Override
-	public TotalExperiencia tiempoexp(Integer codigo) {
-		long days=0;
-		float year=0,mes=0;
-		for (ExperienciaLaboral exp : exlRepo.listarPorPerCodigo(codigo)) {
-			days=ChronoUnit.DAYS.between(exp.getFechaInicio(),exp.getFechaFin())+days;
-			
+	public void experienciaPdf(HttpServletResponse response) {
+
+		//List<TotalExperiencia> lstTotalExp = tiempoIndividual();
+		List<PersonaCalculo> lstPersona=tiempoIndividual();
+
+		JasperData jasper = new JasperData();
+
+		Map<String, Object> dataSource = new HashMap<>();
+
+		dataSource.put("experiencia", lstPersona);
+
+		jasper.setPathJrxml("/static/reporte/pdf/experiencia_laboral.jrxml");
+		jasper.setResponse(response);
+		jasper.setDataSource(dataSource);
+
+		try {
+			jasperComponent.exportToPdf(jasper);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		mes=days/30;
-		year=mes/12;
-		return new TotalExperiencia( days,mes,year,codigo);
 	}
 
 	@Override
-	public List<TotalExperiencia> tiempoIndividual(Integer codigo) {
-		List<TotalExperiencia> lstTotalexp=new ArrayList<TotalExperiencia>();
-		TotalExperiencia txp=null;
-		for (ExperienciaLaboral exp : exlRepo.listarPorPerCodigo(codigo)) {
-			txp=new TotalExperiencia(ChronoUnit.DAYS.between(exp.getFechaInicio(),exp.getFechaFin()),ChronoUnit.MONTHS.between(exp.getFechaInicio(),exp.getFechaFin()),ChronoUnit.YEARS.between(exp.getFechaInicio(),exp.getFechaFin()),exp.getCodigo());	
-			lstTotalexp.add(txp);
+	public void experienciaExcel(HttpServletResponse response) {
+		List<PersonaCalculo> lstPersona=tiempoIndividual();
+
+		JasperData jasper = new JasperData();
+
+		Map<String, Object> dataSource = new HashMap<>();
+
+		dataSource.put("experiencia", lstPersona);
+
+		jasper.setPathJrxml("/static/reporte/pdf/experiencia_laboral.jrxml");
+		jasper.setResponse(response);
+		jasper.setDataSource(dataSource);
+
+		try {
+			jasperComponent.exportToExcel(jasper);
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
-		
-		return lstTotalexp;
+
 	}
 
 }

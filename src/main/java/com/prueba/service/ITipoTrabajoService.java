@@ -2,6 +2,7 @@ package com.prueba.service;
 
 import java.util.List;
 
+import com.prueba.dto.RespuestaServidor;
 import com.prueba.model.TipoTrabajo;
 
 public interface ITipoTrabajoService {
@@ -11,5 +12,7 @@ public interface ITipoTrabajoService {
 
 	TipoTrabajo listarPorCodigo(Integer codigo);
 
-	void update(TipoTrabajo tt);
+	RespuestaServidor update(TipoTrabajo tt);
+	
+	RespuestaServidor eliminar(Integer codigo);
 }

@@ -78,7 +78,8 @@ public class TipoTrabajoRepository {
 	}
 
 
-	public void update(TipoTrabajo tt) {
+	public Boolean update(TipoTrabajo tt) {
+		boolean flag;
 		String sql = "update tipo_trabajo  set tit_nombre=? where tit_codigo=?";
 		try {
 			Connection conexion = datasource.getConnection();
@@ -86,12 +87,30 @@ public class TipoTrabajoRepository {
 			PreparedStatement ps = conexion.prepareStatement(sql);
 			ps.setString(1, tt.getNombre());
 			ps.setInt(2, tt.getCodigo());
-			ps.execute();
+			flag=ps.execute();
 			ps.close();
 			conexion.close();
-
+			return flag;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	public Boolean eliminar(Integer codigo) {
+		boolean flag;
+		String sql="delete from tipo_trabajo where tit_codigo=?";
+		try {
+			Connection conexion = datasource.getConnection();
+
+			PreparedStatement ps = conexion.prepareStatement(sql);
+			ps.setInt(1, codigo);
+			flag=ps.execute();
+			ps.close();
+			conexion.close();
+			return flag;
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
 	}
 }

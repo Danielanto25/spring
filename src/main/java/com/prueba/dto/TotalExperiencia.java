@@ -4,17 +4,18 @@ import lombok.Data;
 
 @Data
 public class TotalExperiencia {
+	
 	private long dias;
-	private float meses;
-	private float years;
-	private Integer codigo;
-	public TotalExperiencia(long dias, float meses, float years,Integer codigo) {
+	private double meses;
+	private double years;
+	private String nombreTrabajo;
+
+	public TotalExperiencia(long dias, Double meses, Double years, String nombreTrabajo) {
 		super();
 		this.dias = dias;
 		this.meses = meses;
 		this.years = years;
-		this.codigo=codigo;
+		this.nombreTrabajo = nombreTrabajo;
 	}
-
 
 }

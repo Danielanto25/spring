@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.prueba.dto.RespuestaServidor;
 import com.prueba.model.TipoTrabajo;
 import com.prueba.repository.TipoTrabajoRepository;
 import com.prueba.service.ITipoTrabajoService;
@@ -34,9 +35,30 @@ public class TipoTrabajoServiceImpl implements ITipoTrabajoService {
 	}
 
 	@Override
-	public void update(TipoTrabajo tt) {
-		titRepo.update(tt);
+	public RespuestaServidor update(TipoTrabajo tt) {
+		if(!titRepo.update(tt)) {
+			
+			return new RespuestaServidor("modificacion Exitosa",1);
+			
+			
+		}else {
+			return new RespuestaServidor("modificacion Fallida",2);
+		}
+			
+
+	}@Override
+	public RespuestaServidor eliminar(Integer codigo ) {
+		if(!titRepo.eliminar(codigo)) {
+			
+			return new RespuestaServidor("Eliminacion Exitosa",1);
+			
+			
+		}else {
+			return new RespuestaServidor("Eliminacion Fallida",2);
+		}
+			
 
 	}
 
+	
 }
